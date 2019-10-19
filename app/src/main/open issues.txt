@@ -1,0 +1,28 @@
+create login screen with firebase auth -> Done
+use authentication to fetch data from database -> Done
+add role based authentication for different nodes in firebase
+show groups and time schedules in ascending order
+send email and report generation
+include call feature
+excel name and excel sheet name correction -> Done
+modify data storage location -> from internal to external (if required)
+role based action -> Done
+check if excel data can be shown in app
+Link for email -> https://javatutorial.net/send-email-with-attachments-android
+Get uri from file -> https://stackoverflow.com/questions/3004713/get-content-uri-from-file-path-in-android
+
+
+auto add time schedule in player data if time schedule is created
+auto add time schedule in player data if group time schedule map created
+add timeouts for all database calls
+Time not populating in create attendance setup activity -> Done
+Refresh layout after mapping group time schedule
+Group time schedule list expand collapse animation addition
+loading spinner in attendance setup and attendance activity -> Done
+Attendance activity toolbar text fix
+Attendance activity fetch already added attendance data and merge
+Animated cardview -> https://github.com/armcha/ElasticView
+
+add player image in firebase storage
+auto upload generated excel report to firebase storage
+optimize data fetch to reduce network usage

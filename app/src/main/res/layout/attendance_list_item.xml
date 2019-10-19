@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical">
+
+  <RelativeLayout
+      android:id="@+id/view_background"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@drawable/gradient_present_absent">
+
+    <ImageView
+        android:id="@+id/present_icon"
+        android:layout_width="@dimen/ic_delete"
+        android:layout_height="@dimen/ic_delete"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/padd_10"
+        android:layout_marginEnd="@dimen/padd_10"
+        android:src="@drawable/ic_present" />
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_marginRight="@dimen/padd_10"-->
+        <!--android:layout_marginEnd="@dimen/padd_10"-->
+        <!--android:layout_toLeftOf="@id/present_icon"-->
+        <!--android:text="Present"-->
+        <!--android:textColor="#fff"-->
+        <!--android:textSize="13dp" />-->
+
+    <ImageView
+        android:id="@+id/absent_icon"
+        android:layout_width="@dimen/ic_delete"
+        android:layout_height="@dimen/ic_delete"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/padd_10"
+        android:layout_marginEnd="@dimen/padd_10"
+        android:src="@drawable/ic_absent" />
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_marginLeft="@dimen/padd_10"-->
+        <!--android:layout_marginStart="@dimen/padd_10"-->
+        <!--android:layout_toRightOf="@id/absent_icon"-->
+        <!--android:text="Absent"-->
+        <!--android:textColor="#fff"-->
+        <!--android:textSize="13dp" />-->
+
+  </RelativeLayout>
+
+  <RelativeLayout
+      android:id="@+id/view_foreground"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@android:color/white"
+      android:padding="@dimen/padd_10">
+
+    <ImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="@dimen/thumbnail"
+        android:layout_height="@dimen/thumbnail"
+        android:layout_marginEnd="@dimen/activity_padding_horizontal"
+        android:scaleType="centerCrop"
+        android:background="@drawable/ic_player_image"
+    />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/thumbnail"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="1"
+        android:textSize="17dp" />
+
+    <TextView
+        android:id="@+id/contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@id/thumbnail"
+        android:textSize="12dp"
+    />
+
+    <TextView
+        android:id="@+id/doj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@id/thumbnail"
+    />
+
+    <ImageView
+        android:id="@+id/presence"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="invisible"
+        />
+    <!--
+        android:background="@drawable/ic_wrong"
+    -->
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/presence"
+        android:layout_toEndOf="@id/contact"
+        android:gravity="end"
+        android:hint="10:00"
+    />
+
+    <TextView
+        android:id="@+id/delay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@id/doj"
+        android:gravity="end"
+        android:textColor="@color/colorMaterialRed"
+    />
+  </RelativeLayout>
+</FrameLayout>

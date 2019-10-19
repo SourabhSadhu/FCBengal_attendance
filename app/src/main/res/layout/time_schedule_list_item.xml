@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:card_view="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+  <androidx.cardview.widget.CardView
+      android:id="@+id/card_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_gravity="center"
+      android:layout_margin="@dimen/card_margin"
+      android:elevation="3dp"
+      card_view:cardCornerRadius="@dimen/card_album_radius"
+      card_view:cardElevation="5dp"
+      card_view:cardUseCompatPadding="true"
+  >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+    >
+      
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:id="@+id/llthumbnail"
+          android:background="@color/colorPrimaryBlue"
+          card_view:layout_constraintLeft_toLeftOf="parent"
+          card_view:layout_constraintTop_toTopOf="parent"
+          card_view:layout_constraintRight_toRightOf="parent"
+      >
+        <com.fcbengal.android.attendance.helper.SimpleAnalogClock
+            android:id="@+id/thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/album_cover_height"
+
+            android:backgroundTint="@android:color/black"
+        />
+      </LinearLayout>
+
+      <TextView
+          android:id="@+id/day"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          card_view:layout_constraintLeft_toLeftOf="parent"
+          card_view:layout_constraintTop_toBottomOf="@id/llthumbnail"
+          android:paddingLeft="@dimen/album_title_half_padding"
+          android:paddingRight="@dimen/album_title_half_padding"
+          android:gravity="center_horizontal"
+      />
+
+      <TextView
+          android:id="@+id/from"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          card_view:layout_constraintTop_toBottomOf="@id/day"
+          card_view:layout_constraintLeft_toLeftOf="parent"
+          card_view:layout_constraintRight_toLeftOf="@id/to"
+          android:paddingBottom="@dimen/songs_count_padding_bottom"
+          android:paddingLeft="@dimen/album_title_padding"
+          android:paddingRight="@dimen/album_title_half_padding"
+          android:textSize="@dimen/songs_count"
+          android:gravity="center_horizontal"
+          android:hint="2300"
+      />
+
+      <TextView
+          android:id="@+id/to"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          card_view:layout_constraintRight_toRightOf="parent"
+          card_view:layout_constraintLeft_toRightOf="@id/from"
+          card_view:layout_constraintTop_toBottomOf="@id/day"
+          android:paddingBottom="@dimen/songs_count_padding_bottom"
+          android:paddingLeft="@dimen/album_title_half_padding"
+          android:paddingRight="@dimen/album_title_padding"
+          android:textSize="@dimen/songs_count"
+          android:gravity="center_horizontal"
+          android:hint="2400"
+      />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+  </androidx.cardview.widget.CardView>
+
+</LinearLayout>
