@@ -9,17 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import android.widget.Toast.LENGTH_SHORT
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionManager
 import com.fcbengal.android.attendance.R
 import com.fcbengal.android.attendance.adapter.PlayerListRecyclerAdapter
 import com.fcbengal.android.attendance.entity.Group
 import com.fcbengal.android.attendance.entity.Player
 import com.fcbengal.android.attendance.utils.DatabaseUtil
 import com.fcbengal.android.attendance.utils.DatabaseUtil.constantChildSeparator
+import com.fcbengal.android.attendance.utils.animation.ResizeAnimation
+import com.fcbengal.android.attendance.utils.animation.Rotate
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.database.DatabaseError
 import kotlinx.android.synthetic.main.fragment_player.*
@@ -49,6 +53,11 @@ class PlayerFragment : Fragment() {
     private lateinit var buttonReset : Button
     private lateinit var toggleActive: ToggleButton
 
+    private lateinit var groupListLayout : LinearLayout
+    private lateinit var groupListExpandImage : ImageView
+    private var initialHeight = 0
+    private var isGroupListExpanded = false
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_player, container, false)
@@ -66,6 +75,20 @@ class PlayerFragment : Fragment() {
         toggleActive = view.findViewById(R.id.toggle_active)
         doj.isEnabled = false
         dob.isEnabled = false
+
+        groupListLayout = view.findViewById(R.id.linearLayout1)
+        groupListExpandImage = view.findViewById(R.id.groupListExpandImage)
+        initialHeight = groupListLayout.layoutParams.height
+        groupListExpandImage.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_arrow_drop_down))
+        groupListExpandImage.setOnClickListener{
+            TransitionManager.beginDelayedTransition(groupListLayout, Rotate())
+            if(!isGroupListExpanded){
+                expandRecyclerView()
+            }else{
+                collapseRecyclerView()
+            }
+            isGroupListExpanded = !isGroupListExpanded
+        }
 
         val calendar = Calendar.getInstance()
         val mYear = calendar.get(Calendar.YEAR)
@@ -241,7 +264,7 @@ class PlayerFragment : Fragment() {
             }
 
             override fun onDataChange(data: Any) {
-                stopLoader()
+
 //                val playerMap = data as HashMap<*, *>
                 val response = data as ArrayList<*>
                 playerList = ArrayList()
@@ -260,6 +283,7 @@ class PlayerFragment : Fragment() {
                             override fun onSelectedPlayer(player: Player) {
                                 selectedPlayer = player
                                 populatePlayerData(player)
+                                collapseRecyclerView()
                             }
 
                             override fun onLongClick(data: String) {
@@ -270,7 +294,8 @@ class PlayerFragment : Fragment() {
                 playerRecyclerView.addItemDecoration(DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL))
                 playerRecyclerView.itemAnimator = DefaultItemAnimator()
                 playerRecyclerView.adapter = playerListRecyclerAdapter
-
+                expandRecyclerView()
+                stopLoader()
             }
         })
     }
@@ -296,5 +321,19 @@ class PlayerFragment : Fragment() {
         }else{
             listener.stopLoaderWithError(false, msg)
         }
+    }
+
+    private fun expandRecyclerView(){
+        val resizeAnimation = ResizeAnimation(groupListLayout,LinearLayout.LayoutParams.MATCH_PARENT,initialHeight)
+        resizeAnimation.duration = 30
+        groupListLayout.startAnimation(resizeAnimation)
+        groupListExpandImage.rotation = 180f
+    }
+
+    private fun collapseRecyclerView(){
+        val resizeAnimation = ResizeAnimation(groupListLayout,initialHeight,0)
+        resizeAnimation.duration = 30
+        groupListLayout.startAnimation(resizeAnimation)
+        groupListExpandImage.rotation = 0f
     }
 }

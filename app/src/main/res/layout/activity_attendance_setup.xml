@@ -63,6 +63,7 @@
                     android:layout_weight="0.1"
                     android:layout_gravity="end"
                     android:id="@+id/groupListExpandImage"
+                    android:contentDescription="view to control height"
                     />
             </LinearLayout>
             

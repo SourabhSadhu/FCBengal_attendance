@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.crashlytics.android.Crashlytics
 import com.fcbengal.android.attendance.R
 import com.fcbengal.android.attendance.adapter.TimeScheduleListRecyclerAdapter
 import com.fcbengal.android.attendance.entity.Group
@@ -131,7 +132,13 @@ class TimeScheduleFragment : Fragment() {
 
                     override fun onFailure(e: Exception) {
                         Log.e(TAG, e.message, e)
-                        listener.stopLoaderWithError(false, "Unable to update")
+                        Crashlytics.logException(e)
+                        resetUI()
+                        if(null != e.message){
+                            listener.stopLoaderWithError(false, e.message.toString())
+                        }else{
+                            listener.stopLoaderWithError(false, "Unable to add time schedule")
+                        }
 
                     }
                 })

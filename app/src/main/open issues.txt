@@ -26,3 +26,10 @@ Animated cardview -> https://github.com/armcha/ElasticView
 add player image in firebase storage
 auto upload generated excel report to firebase storage
 optimize data fetch to reduce network usage
+
+
+CHECK FOR EXISTING TIMESCHEDULE ID BEFORE INSERTING AS IT THE KEY -> Done
+ADD CRASHLYTICS LOG IN ALL EXCEPTIONS
+If deactivating a group of time schedule then also make the mapping inactive
+if any list has single item then select it by default(exp. time schedule)
+sort group list while creating report

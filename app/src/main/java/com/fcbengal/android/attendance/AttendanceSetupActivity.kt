@@ -106,23 +106,28 @@ class AttendanceSetupActivity : AppCompatActivity() {
         initialHeight = groupListLayout.layoutParams.height
         groupListExpandImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_arrow_drop_down))
         groupListExpandImage.setOnClickListener{
+            TransitionManager.beginDelayedTransition(contentMain, Rotate())
             if(!isGroupListExpanded){
-                val resizeAnimation = ResizeAnimation(groupListLayout,LinearLayout.LayoutParams.MATCH_PARENT,initialHeight)
-                resizeAnimation.duration = 30
-                groupListLayout.startAnimation(resizeAnimation)
+                expandRecyclerView()
             }else{
-                val resizeAnimation = ResizeAnimation(groupListLayout,initialHeight,0)
-                resizeAnimation.duration = 30
-                groupListLayout.startAnimation(resizeAnimation)
+                collapseRecyclerView()
             }
             isGroupListExpanded = !isGroupListExpanded
-            TransitionManager.beginDelayedTransition(contentMain, Rotate())
-            if(isGroupListExpanded) {
-                groupListExpandImage.rotation = 180f
-            } else {
-                groupListExpandImage.rotation = 0f
-            }
         }
+    }
+
+    private fun expandRecyclerView(){
+        val resizeAnimation = ResizeAnimation(groupListLayout,LinearLayout.LayoutParams.MATCH_PARENT,initialHeight)
+        resizeAnimation.duration = 30
+        groupListLayout.startAnimation(resizeAnimation)
+        groupListExpandImage.rotation = 180f
+    }
+
+    private fun collapseRecyclerView(){
+        val resizeAnimation = ResizeAnimation(groupListLayout,initialHeight,0)
+        resizeAnimation.duration = 30
+        groupListLayout.startAnimation(resizeAnimation)
+        groupListExpandImage.rotation = 0f
     }
 
     override fun onBackPressed() {
@@ -144,10 +149,7 @@ class AttendanceSetupActivity : AppCompatActivity() {
             override fun onDataChange(data: Any) {
                 val response = data as ArrayList<*>
                 val groupArrayList = ArrayList<Group>()
-//                data.forEach{(k, v) ->
-//                    groupMap[k] = v
-//                    groupArrayList.add(v)
-//                }
+
                 response.forEach { responseEntity ->
                     val group = responseEntity as Group
                     groupMap[group.id] = group
@@ -164,6 +166,7 @@ class AttendanceSetupActivity : AppCompatActivity() {
                                 Log.e("Groupid selected", group.id)
                                 selectedGroupId = group.id
                                 loadGroupTimeScheduleData(group.id)
+                                collapseRecyclerView()
                             }
 
                             override fun onLongClick(data: String) {
@@ -184,7 +187,7 @@ class AttendanceSetupActivity : AppCompatActivity() {
                 groupRecyclerView.addItemDecoration(DividerItemDecoration(this@AttendanceSetupActivity, DividerItemDecoration.VERTICAL))
                 groupRecyclerView.itemAnimator = DefaultItemAnimator()
                 groupRecyclerView.adapter = groupListRecyclerAdapter
-
+                expandRecyclerView()
                 stopLoader()
             }
         })

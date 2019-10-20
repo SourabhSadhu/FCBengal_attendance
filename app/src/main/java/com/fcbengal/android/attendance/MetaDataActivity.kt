@@ -135,7 +135,7 @@ class MetaDataActivity : AppCompatActivity(),
         loadingSpinner.stopAnimation()
         if (!isCompletedSuccess && !TextUtils.isEmpty(msg)) {
             Log.e(TAG, msg)
-            Toast.makeText(this, "Error occurred", LENGTH_SHORT).show()
+            Toast.makeText(this, msg, LENGTH_SHORT).show()
         }
     }
 

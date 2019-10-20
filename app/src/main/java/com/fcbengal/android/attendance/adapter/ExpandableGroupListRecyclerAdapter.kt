@@ -14,9 +14,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.fcbengal.android.attendance.R
 import com.fcbengal.android.attendance.entity.Group
 import com.fcbengal.android.attendance.entity.TimeSchedule
-import com.fcbengal.android.attendance.R
 
 class ExpandableGroupListRecyclerAdapter(
     private val context: Context,
@@ -90,7 +90,6 @@ class ExpandableGroupListRecyclerAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.expandable_group_list_item, parent, false)
-
         return MyViewHolder(
             context,
             itemView/*, sendGroupId*/
@@ -107,7 +106,7 @@ class ExpandableGroupListRecyclerAdapter(
         holder.itemView.setOnClickListener {
             val viewObject = groupList[position]
             Log.e("GroupAdapterListener", "Clicked on name ${viewObject.name}, id ${viewObject.id}")
-            changeSelectedItemBackground(viewObject, holder)
+            changeSelectedItemBackground(viewObject/*, holder*/)
 
             listener.onSelectedGroup(viewObject)
             if(multiSelect) {
@@ -168,7 +167,7 @@ class ExpandableGroupListRecyclerAdapter(
         }
     }
 
-    private fun changeSelectedItemBackground(viewObject: Group, holder: MyViewHolder){
+    private fun changeSelectedItemBackground(viewObject: Group/*, holder: MyViewHolder*/){
         if(multiSelect){
             viewObject.selectedUI = !viewObject.selectedUI
         }else {

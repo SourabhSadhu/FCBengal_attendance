@@ -6,10 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.Toast
-import android.widget.ToggleButton
+import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -20,6 +18,8 @@ import com.fcbengal.android.attendance.R
 import com.fcbengal.android.attendance.adapter.GroupListRecyclerAdapter
 import com.fcbengal.android.attendance.entity.Group
 import com.fcbengal.android.attendance.utils.DatabaseUtil
+import com.fcbengal.android.attendance.utils.animation.ResizeAnimation
+import com.fcbengal.android.attendance.utils.animation.Rotate
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.database.DatabaseError
 import kotlinx.android.synthetic.main.fragment_group.*
@@ -38,6 +38,11 @@ class GroupFragment : Fragment(){
     private lateinit var buttonSubmit : Button
     private lateinit var buttonReset : Button
     private lateinit var toggleActive : ToggleButton
+
+    private lateinit var groupListLayout : LinearLayout
+    private lateinit var groupListExpandImage : ImageView
+    private var initialHeight = 0
+    private var isGroupListExpanded = false
 
     lateinit var groupListRecyclerAdapter: GroupListRecyclerAdapter
     private var selectedGroupId: String? = null
@@ -68,6 +73,21 @@ class GroupFragment : Fragment(){
         buttonReset = view.findViewById(R.id.button_reset)
         groupRecyclerView = view.findViewById(R.id.group_recycler_view)
         toggleActive = view.findViewById(R.id.toggle_active)
+
+        groupListLayout = view.findViewById(R.id.linearLayout1)
+        groupListExpandImage = view.findViewById(R.id.groupListExpandImage)
+        initialHeight = groupListLayout.layoutParams.height
+        groupListExpandImage.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_arrow_drop_down))
+        groupListExpandImage.setOnClickListener{
+            TransitionManager.beginDelayedTransition(groupListLayout, Rotate())
+            if(!isGroupListExpanded){
+                expandRecyclerView()
+            }else{
+                collapseRecyclerView()
+            }
+            isGroupListExpanded = !isGroupListExpanded
+        }
+
         loadGroupData()
         buttonSubmit.setOnClickListener {
             submitData()
@@ -79,6 +99,7 @@ class GroupFragment : Fragment(){
 
         return view
     }
+
     companion object{
         fun newInstance() : GroupFragment {
             var fragment : GroupFragment? = null
@@ -123,6 +144,7 @@ class GroupFragment : Fragment(){
                                 selectedGroupId = group.id
                                 listener.onGroupData(group)
                                 populateGroupData(group)
+                                collapseRecyclerView()
                             }
 
                             override fun onLongClick(data: String) {
@@ -141,6 +163,7 @@ class GroupFragment : Fragment(){
                 groupRecyclerView.itemAnimator = DefaultItemAnimator()
                 groupRecyclerView.adapter = groupListRecyclerAdapter
                 stopLoader()
+                expandRecyclerView()
             }
         })
     }
@@ -297,5 +320,18 @@ class GroupFragment : Fragment(){
         }
     }
 
+    private fun expandRecyclerView(){
+        val resizeAnimation = ResizeAnimation(groupListLayout,LinearLayout.LayoutParams.MATCH_PARENT,initialHeight)
+        resizeAnimation.duration = 30
+        groupListLayout.startAnimation(resizeAnimation)
+        groupListExpandImage.rotation = 180f
+    }
+
+    private fun collapseRecyclerView(){
+        val resizeAnimation = ResizeAnimation(groupListLayout,initialHeight,0)
+        resizeAnimation.duration = 30
+        groupListLayout.startAnimation(resizeAnimation)
+        groupListExpandImage.rotation = 0f
+    }
 
 }

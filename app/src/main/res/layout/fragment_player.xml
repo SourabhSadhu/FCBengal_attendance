@@ -33,7 +33,7 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="3dp"
-                android:layout_weight="0.3"
+                android:layout_weight="0.2"
                 android:background="@color/colorPrimaryDark"
                 
                 />
@@ -42,7 +42,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="0.4"
+                android:layout_weight="0.5"
                 android:fadingEdge="horizontal"
                 android:gravity="center"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -53,8 +53,16 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="3dp"
-                android:layout_weight="0.3"
+                android:layout_weight="0.2"
                 android:background="@color/colorPrimaryDark"
+                />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.1"
+                android:layout_gravity="end"
+                android:id="@+id/groupListExpandImage"
+                android:contentDescription="view to control height"
                 />
         </LinearLayout>
         

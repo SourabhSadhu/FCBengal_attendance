@@ -456,11 +456,32 @@ object DatabaseUtil {
     fun upsertTimeSchedule(entity: TimeSchedule, listener: OnDataUpsertListener) {
         val dbUrlBuilder = StringBuilder().append(constantTimeSchedule)
         if (entity.id.isNotEmpty()) {
-            dbUrlBuilder.append("/").append(entity.id)
-            databaseReference.child(dbUrlBuilder.toString()).setValue(entity)
-                .addOnCompleteListener {
-                    listener.onSuccess(entity.id)
-                }.addOnFailureListener { listener.onFailure(it) }
+            dbUrlBuilder.append(constantChildSeparator).append(entity.id)
+            //Check for existing
+            var allowedToInsert = true
+            databaseReference.child(dbUrlBuilder.toString())
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                        listener.onFailure(RuntimeException("Unable to check data before insert"))
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+                        if (p0.hasChildren()) {
+                            val timeSchedule = p0.getValue(GroupTimeSchedule::class.java)
+                            if (null != timeSchedule && timeSchedule.active && entity.active) {
+                                listener.onFailure(RuntimeException("Time Schedule already exists"))
+                                allowedToInsert = false
+                            }
+                        }
+                        if(allowedToInsert){
+                            databaseReference.child(dbUrlBuilder.toString()).setValue(entity)
+                                .addOnCompleteListener {
+                                    listener.onSuccess(entity.id)
+                                }.addOnFailureListener { listener.onFailure(it) }
+                        }
+                    }
+                })
+
         } else {
             listener.onFailure(RuntimeException("Invalid time schedule ID"))
         }
